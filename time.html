@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: black;
+            width: 1000px;
+            height: 580px;
+        }
+        #time {
+            color: rgb(6, 223, 89);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 300px;
+            font-weight: 500;
+        }
+        #files {
+            position: absolute;
+        }
+        #image {
+            height: 580px;
+            display: block;
+        }
+    </style>
+    <script type="text/javascript">
+        var files = null;
+        var screenWidth = 1000;
+
+        function setTime() {
+            var today = new Date();
+            var hours = today.getHours() + "";
+            if(hours.length < 2) {
+                hours = "0" + hours;
+            }
+            var minutes = today.getMinutes() + "";
+            if(minutes.length < 2) {
+                minutes = "0" + minutes;
+            }
+            var time = hours + ":" + minutes;
+            document.getElementById("time").innerHTML = time;
+        }
+
+        function setImage() {
+            index = Math.floor(Math.random() * files.length);
+            file = files[index];
+            // console.log(file);
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    document.getElementById('image').src = e.target.result;
+                    setTimeout(() => {
+                        var imageWidth = document.getElementById('image').clientWidth;
+                        // console.log(imageWidth);
+                        offset = parseInt((screenWidth - imageWidth) / 2);
+                        document.getElementById('image').style.marginLeft = offset + "px";
+                    }, 10);
+                };
+            })(file);
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(file);
+
+        }
+
+        function handleFileSelect(evt) {
+            document.getElementById('files').style.display = "None";
+            files = evt.target.files; // FileList object
+            // console.log(files);
+            setImage();
+            setInterval(setImage, 20000);
+        }
+
+
+        function onLoad() {
+            setTime();
+            setInterval(setTime, 60000);
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        }
+    </script>
+
+</head>
+
+<body onload="onLoad()">
+    <div id="time"></div>
+    <input type="file" id="files" name="files[]" multiple />
+    <img id="image" />
+</body>
+
+</html>
