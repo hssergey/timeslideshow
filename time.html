@@ -5,28 +5,29 @@
     <style>
         body {
             background-color: black;
-            width: 1000px;
-            height: 580px;
+            width: 960px;
+            height: 500px;
         }
         #time {
             color: rgb(6, 223, 89);
             position: absolute;
             top: 0px;
             left: 0px;
-            font-size: 300px;
+            font-size: 380px;
             font-weight: 500;
+            -webkit-text-stroke: 5px white;
         }
         #files {
             position: absolute;
         }
         #image {
-            height: 580px;
+            height: 500px;
             display: block;
         }
     </style>
     <script type="text/javascript">
         var files = null;
-        var screenWidth = 1000;
+        var screenWidth = 960;
 
         function setTime() {
             var today = new Date();
@@ -57,6 +58,7 @@
                         offset = parseInt((screenWidth - imageWidth) / 2);
                         document.getElementById('image').style.marginLeft = offset + "px";
                     }, 10);
+                    
                 };
             })(file);
             // Read in the image file as a data URL.
@@ -77,6 +79,7 @@
             setTime();
             setInterval(setTime, 60000);
             document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
         }
     </script>
 
